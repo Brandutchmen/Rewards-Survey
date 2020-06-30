@@ -1,92 +1,375 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
+  <v-container fluid>
+    <v-row class="text-center mt-4 mb-4">
+      <v-spacer></v-spacer>
+      <v-stepper v-model="e1">
+        <v-stepper-header>
+          <v-stepper-step :complete="e1 > 3" :step="e1 > 3 ? '1' : e1 ">Verify Identity</v-stepper-step>
 
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
+          <v-divider></v-divider>
 
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
-      </v-col>
+          <v-stepper-step :complete="e1 > 14" :step="e1 > 14 ? '4' : e1 ">Answer Survey Questions</v-stepper-step>
 
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          What's next?
-        </h2>
+          <v-divider></v-divider>
 
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-row>
-      </v-col>
+          <v-stepper-step step="15">Get $50 Walmart Gift Card</v-stepper-step>
+        </v-stepper-header>
 
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Important Links
-        </h2>
+        <v-stepper-items>
+          <v-stepper-content step="1">
+            <h2 class="font-weight-medium">What is your name?</h2>
+            <v-text-field :rules="required" autofocus class="mx-12 mb-6" placeholder="John Doe"></v-text-field>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+          </v-stepper-content>
 
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-row>
-      </v-col>
+          <v-stepper-content step="2">
+            <h2 class="font-weight-medium">What is your zip code?</h2>
+            <v-text-field :rules="required" autofocus class="mx-12 mb-6" placeholder="12345"></v-text-field>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
 
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Ecosystem
-        </h2>
+          <v-stepper-content step="3">
+            <h2 class="font-weight-medium">What country do you live in?</h2>
+            <v-select
+                    class="mx-12 mb-6"
+                    :items="countries"
+                    label="Countries"
+            ></v-select>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
 
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-row>
-      </v-col>
+          <v-stepper-content step="4">
+            <h2 class="font-weight-medium">Do you want to receive a $50 Walmart Gift Card?</h2>
+            <v-col align-self="center">
+            <v-radio-group>
+              <v-radio
+                      label="Yes"
+              ></v-radio>
+              <v-radio
+                      label="No"
+              ></v-radio>
+            </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="5">
+            <h2 class="font-weight-medium">What car brand would you purchase from?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Ford"
+                ></v-radio>
+                <v-radio
+                        label="Volvo"
+                ></v-radio>
+                <v-radio
+                        label="Ferrari"
+                ></v-radio>
+                <v-radio
+                        label="Volkswagen"
+                ></v-radio>
+                <v-radio
+                        label="Chevrolet"
+                ></v-radio>
+                <v-radio
+                        label="Buick"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="6">
+            <h2 class="font-weight-medium">Do you use online banking?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Yes"
+                ></v-radio>
+                <v-radio
+                        label="No"
+                ></v-radio>
+                <v-radio
+                        label="Maybe"
+                ></v-radio>
+                <v-radio
+                        label="Probably"
+                ></v-radio>
+                <v-radio
+                        label="I am not sure"
+                ></v-radio>
+                <v-radio
+                        label="I would like to speak to a professional about this"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="7">
+            <h2 class="font-weight-medium">Do you use Apple or Samsung?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Apple"
+                ></v-radio>
+                <v-radio
+                        label="Samsung"
+                ></v-radio>
+                <v-radio
+                        label="Other"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="8">
+            <h2 class="font-weight-medium">Have you ever used Teamviewer or Anydesk?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Yes"
+                ></v-radio>
+                <v-radio
+                        label="No"
+                ></v-radio>
+                <v-radio
+                        label="Prefer not to say"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="9">
+            <h2 class="font-weight-medium">Have you purchased WinRar in the past 30 years?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Yes"
+                ></v-radio>
+                <v-radio
+                        label="No"
+                ></v-radio>
+                <v-radio
+                        label="My license expired"
+                ></v-radio>
+                <v-radio
+                        label="Prefer not to say"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="10">
+            <h2 class="font-weight-medium">What is your spirit animal?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Eagle"
+                ></v-radio>
+                <v-radio
+                        label="Fox"
+                ></v-radio>
+                <v-radio
+                        label="Lion"
+                ></v-radio>
+                <v-radio
+                        label="Bear"
+                ></v-radio>
+                <v-radio
+                        label="Tuna"
+                ></v-radio>
+                <v-radio
+                        label="Prefer not to say"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="11">
+            <h2 class="font-weight-medium">What drink do you prefer?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Pepsi"
+                ></v-radio>
+                <v-radio
+                        label="Coke"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="12">
+            <h2 class="font-weight-medium">Which of the following are you?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Introvert"
+                ></v-radio>
+                <v-radio
+                        label="Extrovert"
+                ></v-radio>
+                <v-radio
+                        label="Prefer not to answer"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="13">
+            <h2 class="font-weight-medium">Are you vegan?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Yes"
+                ></v-radio>
+                <v-radio
+                        label="No"
+                ></v-radio>
+                <v-radio
+                        label="Prefer not to answer"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="14">
+            <h2 class="font-weight-medium">Which celebrity would you like to meet?</h2>
+            <v-col align-self="center">
+              <v-radio-group>
+                <v-radio
+                        label="Tom Cruise"
+                ></v-radio>
+                <v-radio
+                        label="Indiana Jones"
+                ></v-radio>
+                <v-radio
+                        label="Chris Pratt"
+                ></v-radio>
+                <v-radio
+                        label="Tom Holland"
+                ></v-radio>
+                <v-radio
+                        label="Scarlett Johansson"
+                ></v-radio>
+                <v-radio
+                        label="Boris Johnson"
+                ></v-radio>
+              </v-radio-group>
+            </v-col>
+            <v-btn
+                    color="primary"
+                    @click="nextQuestion"
+            >
+              Continue
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-content step="15">
+            <h2 class="font-weight-medium">Thank you for filling out our survey!</h2>
+            <h2 class="font-weight-medium">Which email address should we mail the gift card to?</h2>
+            <v-text-field :rules="email" class="mx-12 mb-6" placeholder="john@example.com"></v-text-field>
+            <v-btn
+                    color="primary"
+                    @click="e1 = 1"
+            >
+              Take the survey again!
+            </v-btn>
+            <v-btn text @click="previousQuestion">Back</v-btn>
+          </v-stepper-content>
+
+
+        </v-stepper-items>
+      </v-stepper>
+      <v-spacer></v-spacer>
+
     </v-row>
   </v-container>
 </template>
@@ -95,57 +378,30 @@
   export default {
     name: 'HelloWorld',
 
-    data: () => ({
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader',
+    data () {
+      return {
+        e1: 1,
+        required: [
+          value => !!value || 'Required.',
+        ],
+        email: [
+          value => !!value || 'Required.',
+          value => {
+            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            return pattern.test(value) || 'Invalid e-mail.'
+          },
+        ],
+        countries: ['United States', 'Canada', 'Mexico', 'Alaska'],
+      }
+    },
+    methods: {
+        nextQuestion() {
+          this.e1 = this.e1 + 1;
         },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify',
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify',
-        },
-      ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com',
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com',
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuejs.com/vuetify',
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs',
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify',
-        },
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer',
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-        },
-      ],
-    }),
+
+        previousQuestion() {
+          this.e1 = this.e1 - 1;
+        }
+    }
   }
 </script>
