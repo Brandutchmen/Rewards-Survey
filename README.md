@@ -1,4 +1,10 @@
-# rewards-survey
+# Rewards Survey
+
+This is a scam-baiting example form that promises $50 Walmart Gift Cards.
+
+Demo: https://rewards.brandonyoung.dev
+
+### Disclaimer: This form does not record any user data
 
 ## Project setup
 ```
